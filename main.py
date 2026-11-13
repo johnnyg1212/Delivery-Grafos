@@ -9,6 +9,7 @@ from dijkstra import distancias_a_partir_de, dijkstra, para_dicionario
 
 BAIRRO = "Cidade Universitária I, Limeira, São Paulo, Brazil"
 LOJA_LATLON = None
+RAIO_METROS = 900
 QUANTIDADE_CLIENTES = 5
 SEMENTE = 7
 PASTA_SAIDA = Path(__file__).parent / "saida"
@@ -88,7 +89,12 @@ def desenhar_mapa(grafo, loja, clientes, destino, caminho, arquivo):
 
 def carregar_grafo():
     print("Baixando as ruas do bairro (pode levar um minuto)...")
-    grafo = ox.graph_from_place(BAIRRO, network_type="bike")
+    try:
+        grafo = ox.graph_from_place(BAIRRO, network_type="bike")
+    except (TypeError, ValueError, ox._errors.InsufficientResponseError):
+        print(f"Contorno do bairro não encontrado. Usando raio de {RAIO_METROS} m ao redor dele.")
+        centro = ox.geocode(BAIRRO)
+        grafo = ox.graph_from_point(centro, dist=RAIO_METROS, network_type="bike")
     return ox.truncate.largest_component(grafo, strongly=True)
 
 
