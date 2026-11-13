@@ -71,7 +71,13 @@ def pontos_da_rota(grafo, caminho):
 
 def desenhar_mapa(grafo, loja, clientes, destino, caminho, arquivo):
     centro = [grafo.nodes[loja]["y"], grafo.nodes[loja]["x"]]
-    mapa = folium.Map(location=centro, zoom_start=16, tiles="OpenStreetMap")
+    mapa = folium.Map(location=centro, zoom_start=16, tiles="CartoDB positron")
+    folium.TileLayer(
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        attr="Esri World Imagery",
+        name="Satélite",
+    ).add_to(mapa)
+    folium.LayerControl().add_to(mapa)
     for aresta in ox.graph_to_gdfs(grafo, nodes=False).geometry:
         pontos = [(lat, lon) for lon, lat in aresta.coords]
         folium.PolyLine(pontos, color="#9aa0a6", weight=2).add_to(mapa)
