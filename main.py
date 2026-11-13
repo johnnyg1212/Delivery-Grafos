@@ -7,7 +7,7 @@ import osmnx as ox
 
 from dijkstra import distancias_a_partir_de, dijkstra, para_dicionario
 
-BAIRRO = "Jardim Santa Luiza, Limeira, São Paulo, Brazil"
+BAIRRO = "Cidade Universitária I, Limeira, São Paulo, Brazil"
 LOJA_LATLON = None
 QUANTIDADE_CLIENTES = 5
 SEMENTE = 7
